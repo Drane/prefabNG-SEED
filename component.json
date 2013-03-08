@@ -1,0 +1,14 @@
+{
+  "name": "prefabSEED",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.2.0",
+    "font-awesome": "~3.0.2",
+    "jquery": "~1.9.1"
+  }
+}
