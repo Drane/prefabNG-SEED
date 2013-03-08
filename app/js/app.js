@@ -83,5 +83,6 @@ app.
 //		$log.info('myApp > $routeProvider');
 		$routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: HomeCtrl});
 		$routeProvider.when('/logging', {templateUrl: 'partials/logging.html', controller: LogCtrl});
+		$routeProvider.when('/tree', {templateUrl: 'partials/tree.html', controller: TreeCtrl});
 		$routeProvider.otherwise({redirectTo: '/home'});
 	}]);

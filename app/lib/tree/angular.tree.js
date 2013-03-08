@@ -64,6 +64,7 @@
 			}
 		}
 
+//		return itemTemplate || angular.element('<li class="ng-tree-node"><input ng-model="item">{{item}}<ul></ul></li>');
 		return itemTemplate || angular.element('<li class="ng-tree-node"><div>{{item}}</div><ul></ul></li>');
 	}
 
