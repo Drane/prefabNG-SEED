@@ -2,11 +2,29 @@
 
 /* Services */
 
-
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', []).
+/*	config(['$log', function ($log, log) {
+		var log = log4javascript.getLogger("main");
+		var appender = new log4javascript.InPageAppender();
+		log.addAppender(appender);
+		console.log($log);
+		console.log($logProvider.$get());
+		*//*log.info('log4javascript active %s',stack);
+
+		var stack = new Error().stack;
+		log.info(stack);
+*//*
+
+		log .info('in $LogProvider');
+		return log ;
+	}]).*/
   value('version', '0.1').
+/*	service('$LogProvider', function($log){
+		$log.log('in $LogProvider');
+		return $log;
+	}).*/
 	factory('logutil', function($log) {
 
 		$log.info('myApp.services > logutil');

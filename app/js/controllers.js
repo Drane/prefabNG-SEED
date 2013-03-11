@@ -11,11 +11,9 @@ function HomeCtrl($scope, $log) {
 //HomeCtrl.$inject = [$log];
 
 
-function LogCtrl($log, logutil) {
-	$log.info('> LogCtrl');
-	$log.log('logutil: ',logutil);
-	_logutil.inspect('angular');
-
+function LogCtrl($scope, log) {
+	$scope.$log = log;
+	$scope.message = 'default logmsg';
 }
 
 function TreeCtrl($scope, $log, logutil) {
@@ -27,24 +25,24 @@ function TreeCtrl($scope, $log, logutil) {
     };
     $scope.model = [
         {
-            name: 'Item 1 Name',
+            name: 'Item 1',
             children: [
                 {
-                    name: 'Item 2 Name'
+                    name: 'Item 1.1'
                 }, {
-                    name: 'Item 3 Name',
+                    name: 'Item 1.2',
                     children: [
                         {
-                            name: 'Item 2 Name',
+                            name: 'Item 1.2.1',
                             children: [
                                 {
-                                    name: 'Item 2 Name'
+                                    name: 'Item 1.2.1.1'
                                 }, {
-                                    name: 'Item 3 Name'
+                                    name: 'Item 1.2.1.2'
                                 }
                             ]
                         }, {
-                            name: 'Item 3 Name'
+                            name: 'Item 1.2.1'
                         }
                     ]
                 }

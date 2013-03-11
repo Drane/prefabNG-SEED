@@ -18,36 +18,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
 
-var cfg = {overrideConsole: false};
-var log = log4javascript.getLogger("main");
-var appender = new log4javascript.InPageAppender();
-log.addAppender(appender);
-log.info('log4javascript active');
 
-var originalConsole = {
-	log : console.log,
-	info : console.info,
-	warn : console.warn,
-	error : console.error,
-	dir : console.dir,
-	time : console.time,
-	timeEnd : console.timeEnd,
-	trace : console.trace,
-	assert : console.assert
-}
+(function (log4javascript, angular) {
+	'use strict';
 
-angular.forEach(originalConsole, function (value, key) {
-	if(log[key]){
-		console['_'+key] = value;
-		console[key] = function () {
-			log[key].apply(log, arguments);
-			if(!cfg.overrideConsole){
-				console['_'+key].apply(console, arguments);
-			}
-		};
-	}else{
-		log[key] = console[key];
+	var cfg = {overrideConsole: false};
+	var log = log4javascript.getLogger("main");
+	var appender = new log4javascript.InPageAppender();
+	log.addAppender(appender);
+	log.info('log4javascript active');
+
+	var originalConsole = {
+		log: console.log,
+		info: console.info,
+		warn: console.warn,
+		error: console.error,
+		dir: console.dir,
+		time: console.time,
+		timeEnd: console.timeEnd,
+		trace: console.trace,
+		assert: console.assert
 	}
-})
+	for(var key in originalConsole){
+		var value = originalConsole[key];
+//	forEach(originalConsole, function (value, key) {
+		 if (log[key]) {
+			console['_' + key] = value;
+			console[key] = function () {
+				if (key === "log") {
+					key = "debug";
+				}
+				log[key].apply(log, arguments);
+				if (!cfg.overrideConsole) {
+					if (key === "debug") {
+						key = "log";
+					}
+					var logFn = console['_' + key];
+					logFn.bind(console, arguments);
+				}
+			};
+		} else {
+			log[key] = console[key];
+		}
+	}
+//	});
+	console.info('test');
+	return log;
+
+})(log4javascript, angular);
+

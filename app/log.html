@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<script src="lib/log4javascript/log4javascript_uncompressed.js"></script>
+<script type="text/javascript">
+  var log4js = log4javascript.getLogger("main");
+  var appender = new log4javascript.InPageAppender();
+  log4js.addAppender(appender);
+  log4js.info('log4javascript active');
+
+  var log = {
+    log: console.log.bind(console)
+  };
+
+  log.log.bind(function () {
+    return log4js.log.apply(log4js, arguments);
+  }(log4js));
+
+
+
+  log.log('test');
+  log4js.info(log4javascript.Level.ALL,'log4js test');
+  console.log('test from console');
+</script>
+</body>
+</html>
