@@ -39,12 +39,12 @@
 		/// </remarks>
 
 		// via @fredrik SO trace suggestion; wrapping in special construct so it stands out
-		var suffix = {
-			"@": (this.lineNumber
+		var suffix =
+			"@ "+ (this.lineNumber
 				? this.fileName + ':' + this.lineNumber + ":1" // add arbitrary column value for chrome linking
 				: extractLineNumberFromStack(this.stack)
 				)
-		};
+		;
 
 		args = args.concat([suffix]);
 		// via @paulirish console wrapper

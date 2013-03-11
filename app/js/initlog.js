@@ -19,13 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+(function(exports) {
 (function (log4javascript, angular) {
 	'use strict';
 
 	var cfg = {overrideConsole: false};
-	var log = log4javascript.getLogger("main");
-	var appender = new log4javascript.InPageAppender();
+	var log = exports.log4javascript.getLogger("main");
+	var appender = new exports.log4javascript.InPageAppender();
 	log.addAppender(appender);
 	log.info('log4javascript active');
 
@@ -67,4 +67,5 @@
 	return log;
 
 })(log4javascript, angular);
+}(typeof exports === "object" && exports || this));
 

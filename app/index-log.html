@@ -25,9 +25,14 @@
     // load all of the dependencies asynchronously.
     $script([
       'js/_log.js',
-      'js/_log.inspect.js',
+      'js/_log.inspect.js'
     ], function() {
       // when all is done, ...
+        DEBUGMODE=true;
+
+        _log.info("info");
+        _log.debug("debug");
+        _log.info("info");
     });
   </script>
   <title>My AngularJS App</title>

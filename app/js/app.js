@@ -1,5 +1,5 @@
 'use strict';
-DEBUGMODE = true;
+var DEBUGMODE = true;
 //_logutil.inspect(this,'angular');
 //_logutil.inspect(this,'angular.module');
 // New injector is created from the module.

@@ -25,13 +25,13 @@ angular.module('myApp.services', []).
 		$log.log('in $LogProvider');
 		return $log;
 	}).*/
-	factory('logutil', function($log) {
+	factory('pslog', function() {
 
-		$log.info('myApp.services > logutil');
+		_log.info('myApp.services > logutil');
 
-		var _logutil = {};
+		var pslog = {};
 
-		// Binding Array#slice to Function#call allows slice(arrayLikeObject) to
+		/*// Binding Array#slice to Function#call allows slice(arrayLikeObject) to
 		// return an array.
 		var slice = Function.call.bind([].slice);
 		// Binding Object#toString to Function#call allows toString(value) to
@@ -94,8 +94,8 @@ angular.module('myApp.services', []).
 		function repeat(str, n) {
 			return Array(n + 1).join(str);
 		}
+*/
 
-
-		return _logutil; // returning this is very important
+		return log; // returning this is very important
 	})
 	;

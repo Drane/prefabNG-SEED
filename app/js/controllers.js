@@ -11,8 +11,9 @@ function HomeCtrl($scope, $log) {
 //HomeCtrl.$inject = [$log];
 
 
-function LogCtrl($scope, log) {
-	$scope.$log = log;
+function LogCtrl($scope, $log) {
+    $log.log("> LogCtrl");
+	$scope.$log = $log;
 	$scope.message = 'default logmsg';
 }
 
