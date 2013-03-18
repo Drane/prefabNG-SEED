@@ -2,6 +2,7 @@
 
 /* Controllers */
 
+var DEBUGMODE = true;
 
 function HomeCtrl($scope, $log) {
 	$log.info('> HomeCtrl');
@@ -17,7 +18,7 @@ function LogCtrl($scope, $log) {
 	$scope.message = 'default logmsg';
 }
 
-function TreeCtrl($scope, $log, logutil) {
+function TreeCtrl($scope, $log) {//logutil
 	$log.info('> TreeCtrl');
 //	$log.log('logutil: ',logutil);
 //	_logutil.inspect('angular');
@@ -26,24 +27,24 @@ function TreeCtrl($scope, $log, logutil) {
     };
     $scope.model = [
         {
-            name: 'Item 1',
+            name: '1',
             children: [
                 {
-                    name: 'Item 1.1'
+                    name: '1.1'
                 }, {
-                    name: 'Item 1.2',
+                    name: '1.2',
                     children: [
                         {
-                            name: 'Item 1.2.1',
+                            name: '1.2.1',
                             children: [
                                 {
-                                    name: 'Item 1.2.1.1'
+                                    name: '1.2.1.1'
                                 }, {
-                                    name: 'Item 1.2.1.2'
+                                    name: '1.2.1.2'
                                 }
                             ]
                         }, {
-                            name: 'Item 1.2.1'
+                            name: '1.2.1'
                         }
                     ]
                 }
@@ -58,3 +59,38 @@ function TreeCtrl($scope, $log, logutil) {
 
 }
 //LogCtrl.$inject = [$log];
+
+function DevCtrl($scope, $log){
+    $log.info('> DevCtrl');
+
+//    $scope.model = ["str",[666, true]];
+//    $scope.model = ["str",{children: [666, true]}];
+    $scope.model = ["str",[666, true]];
+/*
+  $scope.model = [
+    {
+      name: '1',
+      children: [
+        {
+          name: '1.1'
+        }, {
+          name: '1.2',
+          children: [
+            {
+              name: '1.2.1',
+              children: [
+                {
+                  name: '1.2.1.1'
+                }, {
+                  name: '1.2.1.2'
+                }
+              ]
+            }, {
+              name: '1.2.1'
+            }
+          ]
+        }
+      ]
+    }
+  ];*/
+}

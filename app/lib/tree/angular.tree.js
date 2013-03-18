@@ -118,7 +118,15 @@
 			contextName: contextName,
 			collectionExpr: collectionExpr,
 
+            //TODO: replace collectionExp (based on var name) watch with type detecting watch that watches if type is a collection type
+
+            /**
+             * @function
+             */
 			collectionWatch: function (scope) { return scope.$eval(collectionExpr); },
+            /**
+             * @function
+             */
 			treeModelWatch: function (scope) { return scope.$eval(treeModelExpr); },
 
 			getItem: function (scope) {
@@ -178,20 +186,29 @@
 		return tree;
 	}
 
+  /**
+   *
+   * @param scope
+   * @param tree
+   * @param listElem
+   * @param item
+   * @param index
+   */
 	function addListItem (scope, tree, listElem, item, index) {
 		var itemScope = scope.$new();
 		tree.setItem(itemScope, item);
 
+    //run template function to get UL
 		var itemElem = tree.itemTemplate(itemScope, angular.noop);
 
 		if (tree.trackSelection) {
 			itemScope.$selected = false;
 		}
-
+    //fill UL
 		insertListItem(listElem, itemElem, index);
 
 		var childrenListElem = itemElem.children().eq(1);
-
+  //continue from UL
 		loadTree(itemScope, tree, childrenListElem, tree.collectionWatch);
 	}
 
@@ -205,6 +222,13 @@
 		}
 	}
 
+    /**
+     * @function
+     * @param scope
+     * @param tree
+     * @param {JQLite[]} listElem The item in the dom representing the directive.
+     * @param {function} listWatch Watch function for the tree model.
+     */
 	function loadTree (scope, tree, listElem, listWatch) {
 		scope.$watch(listWatch, function (newList, oldList) {
 			if (typeof newList === 'undefined' || newList === null || newList.length === 0) {
@@ -219,6 +243,8 @@
 					addListItem(scope, tree, listElem, item, -1);
 					return;
 				}
+
+        throw new Error('here');
 
 				for (var childElemIndex = itemIndex; childElemIndex < listChildElems.length; childElemIndex += 1) {
 					var childElem = angular.element(listChildElems[childElemIndex]);

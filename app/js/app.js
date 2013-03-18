@@ -1,5 +1,5 @@
 'use strict';
-var DEBUGMODE = true;
+//var DEBUGMODE = true;
 //_logutil.inspect(this,'angular');
 //_logutil.inspect(this,'angular.module');
 // New injector is created from the module.
@@ -19,5 +19,6 @@ app.
 		$routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: HomeCtrl});
 		$routeProvider.when('/logging', {templateUrl: 'partials/logging.html', controller: LogCtrl});
 		$routeProvider.when('/tree', {templateUrl: 'partials/tree.html', controller: TreeCtrl});
+		$routeProvider.when('/dev', {templateUrl: 'partials/dev.html', controller: DevCtrl});
 		$routeProvider.otherwise({redirectTo: '/home'});
 	}]);

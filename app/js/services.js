@@ -25,6 +25,7 @@ angular.module('myApp.services', []).
 		$log.log('in $LogProvider');
 		return $log;
 	}).*/
+
 	factory('pslog', function() {
 
 		_log.info('myApp.services > logutil');
