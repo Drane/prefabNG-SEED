@@ -16,6 +16,9 @@ function LogCtrl($scope, $log) {
     $log.log("> LogCtrl");
 	$scope.$log = $log;
 	$scope.message = 'default logmsg';
+	$scope.exception = function (msg) {
+		throw {exception: msg};
+	}
 }
 
 function TreeCtrl($scope, $log) {//logutil
@@ -65,7 +68,9 @@ function DevCtrl($scope, $log){
 
 //    $scope.model = ["str",[666, true]];
 //    $scope.model = ["str",{children: [666, true]}];
-    $scope.model = ["str",[666, true]];
+    $scope.model = [{obj:"test"}];
+    $scope.model2 = ["str",[666, true],{obj:0}];
+//    $scope.model = [666, true];
 /*
   $scope.model = [
     {

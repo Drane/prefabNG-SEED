@@ -1,0 +1,17 @@
+node_modules
+adapter/jasmine.js
+adapter/mocha.js
+adapter/angular-scenario.js
+adapter/require.js
+adapter/qunit.js
+static/testacular.js
+.idea/*
+tmp/*
+docs/_build
+*.swp
+*.swo
+test/e2e/coverage/coverage
+test/e2e/coverageQunit/coverage
+test/e2e/coverageRequirejs/coverage
+test-results.xml
+test/unit/test.log

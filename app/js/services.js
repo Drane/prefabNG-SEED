@@ -25,6 +25,11 @@ angular.module('myApp.services', []).
 		$log.log('in $LogProvider');
 		return $log;
 	}).*/
+/*	factory('$exceptionHandler',function(){
+		return function(exception, cause){
+			alert(JSON.stringify(exception), cause);
+		};
+	}).*/
 
 	factory('pslog', function() {
 

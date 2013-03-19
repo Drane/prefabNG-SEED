@@ -1,6 +1,6 @@
 <p ng-click="changeTree()">This is the partial for home.</p>
 <ul ng-tree="model" multiple>
-  <li select="selected()"><input type="text" ng-model="item.name"/></li>
-<!--  <li select="selected()">{{item.name}}</li>-->
+  <!--<li select="selected()"><input type="text" ng-model="item.name"/></li>-->
+  <li select="selected()">{{item.name}}</li>
 </ul>
 <pre>{{model|json}}</pre>

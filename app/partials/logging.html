@@ -8,4 +8,8 @@
   <button ng-click="$log.warn(message)">warn</button>
   <button ng-click="$log.info(message)">info</button>
   <button ng-click="$log.error(message)">error</button>
+  <button ng-click="exception(message)">exception</button>
+  <button ng-click="$log('info', message)">info via $log('info', message)</button>
+  <button ng-click="$log('group', message)">group</button>
+  <button ng-click="$log('groupEnd', message)">groupEnd</button>
 </div>

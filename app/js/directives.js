@@ -9,7 +9,19 @@ angular.module('myApp.directives', []).
       elm.text(version);
     };
   }]).
-  directive('psTree', function ($compile, $document) {
+	directive('psTree', function ($compile, $document, $log) {
+//		$log.
+		return {
+			compile: function (elem, attrs) {
+				var tree;// = initTree(elem, attrs, $compile, $document);
+
+				return function (scope, elem, attrs) {
+//					loadTree(scope, tree, elem, tree.treeModelWatch);
+				}
+			}
+		};
+	}).
+  directive('psTreeold', function ($compile, $document) {
 
     function getItemTemplate(document, treeElem){
       var itemTemplate;
@@ -25,9 +37,34 @@ angular.module('myApp.directives', []).
 
 //          var createWrapper = childNode.childNodes.length === 0;
 
-          for(var i = 0; i < childNode.childNodes.length; i += 1){
-            //TODO: impl
-          }
+	        var createWrapper = childNode.childNodes.length === 0;
+	        var innerNodes = 0;
+
+	        for (var i = 0; i < childNode.childNodes.length; i += 1) {
+		        var innerNode = childNode.childNodes[i];
+
+		        if (innerNode.nodeName === '#text') {
+			        if (! /^\s*$/.test(innerNode.nodeValue)) {
+				        createWrapper = true;
+				        break;
+			        }
+		        } else if (innerNodes > 0) {
+			        createWrapper = true;
+			        break;
+		        } else {
+			        innerNodes += 1;
+		        }
+	        }
+
+	        if (createWrapper) {
+		        var wrapperEl = document.createElement('DIV');
+
+		        while (childNode.childNodes.length > 0) {
+			        wrapperEl.appendChild(childNode.childNodes[0]);
+		        }
+
+		        childNode.appendChild(wrapperEl);
+	        }
 
           var ulEL = document.createElement('UL');
           childNode.appendChild(ulEL);
@@ -36,13 +73,13 @@ angular.module('myApp.directives', []).
           itemTemplate.addClass('ps-tree-node');
         }
       }
-      return itemTemplate || angular.element('<li class="ps-tree-node"><div>{{item}}</div><ul></ul></li>');
+      return itemTemplate || angular.element('<li class="ps-tree-node"><div>{{node.id}}</div><ul></ul></li>');
     }
 
     function initTree(treeElem, attrs, $compile, $document) {
       var treeModelExpr = attrs.src || attrs.psTree;
       var itemTemplate = getItemTemplate($document[0], treeElem[0]);
-      var contextName = 'item';
+      var contextName = 'node';
 
       var tree = {
         rootElem: treeElem,
@@ -50,7 +87,7 @@ angular.module('myApp.directives', []).
         itemTemplate: $compile(itemTemplate),
         contextName: contextName,
         treeModelWatch: function(scope){ return scope.$eval(treeModelExpr);},
-        collectionWatch: function(scope){ return scope.$eval('item');},
+        collectionWatch: function(scope){ return scope.$eval('node.children');},
 //        collectionWatch: function(scope){ return scope.$eval('angular.isArray(item)?"a":"b"');},
 
         getItem: function(scope){
@@ -76,15 +113,19 @@ angular.module('myApp.directives', []).
       }
     }
 
-    function addListItem(scope, tree, listElem, item, index) {
+    function addListItem(scope, tree, listElem, item, index, key) {
 
       var itemScope = scope.$new();
       //TODO: replace collectionExp (based on var name) watch with type detecting watch that watches if type is a collection type
 
+
+
       console.info('item:',item);
-      if(item instanceof Array){
+	    if(item instanceof Array){
+	      var id = angular.isNumber(key)?key+ ' : ' + 'Array':'Array';
+	      id += ' ['+item.length+']'
         console.info("item is array:", item);
-        tree.setItem(itemScope, item);
+        tree.setItem(itemScope, {id: id, children: item});
 //        tree.setItem(itemScope, item);
         //run template function to get compiled template
         var itemElem = tree.itemTemplate(itemScope, angular.noop);
@@ -110,9 +151,24 @@ angular.module('myApp.directives', []).
           loadTree(itemScope, tree, itemElem, tree.collectionWatch);
         })*/
 
-      }else{
+      }else if(angular.isObject(item)){
+		    var id = angular.isNumber(key)?key+ ' : ' + 'Object':'Object';
+		    id += ' {'+Object.keys(item).length+'}'
+		    console.info("item is object:", item);
+		    tree.setItem(itemScope, {id: id, children: item});
+//        tree.setItem(itemScope, item);
+		    //run template function to get compiled template
+		    var itemElem = tree.itemTemplate(itemScope, angular.noop);
+		    //expand UL t
+		    insertListItem(listElem, itemElem, index);
+
+		    var childrenListElem = itemElem.children().eq(0);
+		    //continue from UL
+		    loadTree(itemScope, tree, childrenListElem, tree.collectionWatch);
+	    }else{
+	      var id = angular.isNumber(key)?key+ ' : ' + item:item;
         console.info("item is NO array:", item);
-        tree.setItem(itemScope, item);
+        tree.setItem(itemScope, {id: id});
 
         var itemElem = tree.itemTemplate(itemScope, angular.noop);
 
@@ -139,7 +195,7 @@ angular.module('myApp.directives', []).
           var listChildElems = listElem.children();
 
           if(itemIndex >= listChildElems.length){
-            addListItem(scope, tree, listElem, item, -1);
+            addListItem(scope, tree, listElem, item, -1, itemIndex);
             return;
           }
 
