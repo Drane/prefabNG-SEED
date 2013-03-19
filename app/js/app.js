@@ -14,14 +14,16 @@ var app = angular.module('myApp', []);
 //_log.inspect(this,'angular');
 //_log.inspect(this,"app");
 app.
-	config(['$routeProvider', function ($routeProvider) {
+  config(['$routeProvider', function ($routeProvider) {
 //		$log.info('myApp > $routeProvider');
-		$routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: HomeCtrl});
-		$routeProvider.when('/logging', {templateUrl: 'partials/logging.html', controller: LogCtrl});
-		$routeProvider.when('/tree', {templateUrl: 'partials/tree.html', controller: TreeCtrl});
-		$routeProvider.when('/dev', {templateUrl: 'partials/dev.html', controller: DevCtrl});
-		$routeProvider.otherwise({redirectTo: '/home'});
-	}]).
+    $routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: HomeCtrl});
+    $routeProvider.when('/logging', {templateUrl: 'partials/logging.html', controller: LogCtrl});
+    $routeProvider.when('/tree', {templateUrl: 'partials/tree.html', controller: TreeCtrl});
+    $routeProvider.when('/dev', {templateUrl: 'partials/dev.html', controller: DevCtrl});
+    $routeProvider.otherwise({redirectTo: '/home'});
+  }]).
+//
+
 
 /**
  * $log decorator
@@ -147,10 +149,15 @@ app.
  return getLogObject($delegate);
  });
  }).*/
-	config(function ($provide) {
+//	config(function ($provide) {
 		//http://alistapart.com/article/getoutbindingsituations
 
-		$provide.decorator('$log', function ($delegate, $sniffer) {
+    // Superpowered logging for AngularJS.
+
+
+/*
+
+    $provide.decorator('$log', function ($delegate, $sniffer) {
 
 //			var prefix = 'testpf';
 
@@ -170,14 +177,17 @@ app.
 //				var log= console.log.bind(console, '[log]' + ' ' +'[' + prefix + ']');
 				this.info= console.info.bind(console, '[info]' + ' ' +'[' + prefix + ']');
 
-				/*return {
+				*/
+/*return {
 					log: log,
 					info: info,
 					debug: debug
-				}*/
+				}*//*
+
 			}
 
-			/*var res = {
+			*/
+/*var res = {
 				prefix: 'testpf',
 				config: {parentLog: null},
 				debug: debugFn,
@@ -190,29 +200,38 @@ app.
 				getBindParam: function(fnName) {
 					return '[' + fnName + ']' + ' ' +'[' + result.prefix + ']';
 				}
-			};*/
+			};*//*
 
+
+*/
 /*			function getBindParam(fnName, that) {
 				return '[' + fnName + ']' + ' ' +'[' + result.prefix + ']';
-			}*/
+			}*//*
 
+
+*/
 /*			function debugFn(prefix2, parentLog){
 				prefix = prefix2;
 				result.config.parentLog = parentLog;
-			}*/
+			}*//*
+
 
 			return new Result;
 
 		});
 	}).
 	run(function ($log) {
-		/*$log.info('begin');
+		*/
+/*$log.info('begin');
 		 $log.log('init', 'app-run');
 		 $log.log('test');
-		 $log.info('info');*/
-		/*
+		 $log.info('info');*//*
+
+		*/
+/*
 		 $log('test');
-		 */
+		 *//*
+
 //		$log.prefix='testww';
 		$log('kkaka');
 		var message = "testmsg";
@@ -229,4 +248,4 @@ app.
 		$log.info(message);
 		$log.warn(message);
 		$log.error(message);
-	});
+	});*/

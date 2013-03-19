@@ -5,103 +5,92 @@
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', []).
-/*	config(['$log', function ($log, log) {
-		var log = log4javascript.getLogger("main");
-		var appender = new log4javascript.InPageAppender();
-		log.addAppender(appender);
-		console.log($log);
-		console.log($logProvider.$get());
-		*//*log.info('log4javascript active %s',stack);
+  service('logutil', function($log){
+    $log.info('in logutil');
 
-		var stack = new Error().stack;
-		log.info(stack);
-*//*
+   /* function _getLog4js() {
+      if(!log4javascript)return;
 
-		log .info('in $LogProvider');
-		return log ;
-	}]).*/
+      var log4js = log4javascript.getLogger("main") || {};
+      var appender = new log4javascript.InPageAppender();
+      log4js.addAppender(appender);
+      log4js.info('log4javascript active');
+
+      return log4js;
+    };
+
+    this.log4js = _getLog4js();
+    this.log4js.info('yes');
+
+    this.bindLog4js = function _bindLog4js(logFn, boundLog){
+      return this.log4js[logFn].bind(boundLog);
+//      return logFn.bind(this.log4js);
+    };*/
+  }).
   value('version', '0.1').
-/*	service('$LogProvider', function($log){
-		$log.log('in $LogProvider');
-		return $log;
-	}).*/
-/*	factory('$exceptionHandler',function(){
-		return function(exception, cause){
-			alert(JSON.stringify(exception), cause);
-		};
-	}).*/
 
-	factory('pslog', function() {
+value('logFactory_whiteList', /.*/).
+//.value('logFactory_whiteList', /!|.*Ctrl|run/)
+  value('logFactory_piercingMethods', {warn: true, error: true}).
+  factory('logFactory', ['$log', 'logFactory_whiteList' , 'logFactory_piercingMethods', 'logutil', function ($log, whiteList, piercing, logutil) {
 
-		_log.info('myApp.services > logutil');
+    console.log('in logFactory');
 
-		var pslog = {};
+    piercing = piercing || {}
+    whiteList = whiteList || /.*/
 
-		/*// Binding Array#slice to Function#call allows slice(arrayLikeObject) to
-		// return an array.
-		var slice = Function.call.bind([].slice);
-		// Binding Object#toString to Function#call allows toString(value) to
-		// return an "[object [[Class]]]" string.
-		var toString = Function.call.bind({}.toString);
+    function bindLog(log, fnName, prefix, parentLog) {
+      var result;
 
-		_logutil.log = function() {
-			// Abort if logging disabled.
-			if (!_logutil.log.enabled) { return; }
-			// Build array of arguments, converting any Arguments object passed into
-			// an array.
-			var args = ["[PS-LOG]"];
-			for (var i = 0; i < arguments.length; i++) {
-				if (toString(arguments[i]) === "[object Arguments]") {
-					// Convert Arguments object into an array for prettier logging.
-					args = args.concat(slice(arguments[i]));
-				} else if (i === 0 && typeof arguments[i] === "string") {
-					// Concatenate 1st string argument to existing "[PS-LOG]" string so
-					// printf-style formatting placeholders work.
-					args[0] = args[0] + " " + arguments[0];
-				} else {
-					// Just push argument onto array.
-					args.push(arguments[i]);
-				}
-			}
-			// Actually log.
-			$log.log.apply(console, args);
-		};
+      if (parentLog === undefined)
+        result = log[fnName].bind(log, '[' + fnName + ']', '[' + prefix + ']');
+      else
+        result = log[fnName].bind(log, '[' + prefix + ']');
 
-		// Enable logging by default.
-		_logutil.log.enabled = true;
+      return result;
+    }
 
-		_logutil.inspect = function(context, prop){
-			// If context was omitted, default to window.
-			if (typeof context === "string") {
-				prop = context;
-				context = window;
-			}
+    return function (prefix, parentLog) {
+      var log = parentLog || console;
+      var match = prefix.match(whiteList);
 
-			// The object to be inspected.
-			var obj = context[prop];
+      function e(fnName) {
+        if (!log[fnName]) {
+          fnName = 'log'
+        }
 
-			var methods = hook(obj, {
-				passName: true,
-				pre: function(name) {
-					indent++;
-					// Log arguments the method was called with.
-					$log.log(repeat(">", indent), prop + "." + name, slice(arguments, 1));
-				},
-				post: function(result, name) {
-					// Log the result.
-					$log.log(repeat("<", indent), "(" + prop + "." + name + ")", result);
-					indent = Math.max(0, indent - 1);
-				}
-			});
-			_logutil.log('Inspecting "%s" methods: %o', prop, methods);
-		};
+        var boundLog = (piercing[fnName] || match) ?
+          bindLog(log, fnName, prefix, parentLog)
+          : angular.noop;
 
-		// Repeat a string n times.
-		function repeat(str, n) {
-			return Array(n + 1).join(str);
-		}
-*/
+        logutil.bindLog4js(fnName, boundLog);
 
-		return log; // returning this is very important
-	})
+        return boundLog;
+      }
+
+      return {
+        debug: e('debug'),
+        info: e('info'),
+        log: e('log'),
+        warn: e('warn'),
+        error: e('error')
+      }
+    }
+  }]).run(function (logFactory) {
+    var logLevel1 = logFactory('level 1')
+    var logLevel1_1 = logFactory('level 1_1', logLevel1)
+    var logLevel1_2 = logFactory('level 1_2', logLevel1)
+    var logLevel1_1_1 = logFactory('level 1_1_1', logLevel1_1)
+    logLevel1.log('one')
+    logLevel1_1.log('two')
+    logLevel1_2.log('three')
+    logLevel1_1_1.log('four')
+
+    logLevel1.log('one')
+    logLevel1_1.info('two')
+    logLevel1_2.warn('three')
+    logLevel1_1_1.error('four')
+    logLevel1_1_1.debug('debug four')
+  })
+
 	;
