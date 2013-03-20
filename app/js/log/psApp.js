@@ -6,10 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 
-angular.module('myApp', ['psLog']).//, 'myApp.psServices']).
+angular.module('myApp', ['psLog', 'psUtil']).//, 'myApp.psServices']).
 
   config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/logging', {templateUrl: 'partials/logging.html', controller: LogCtrl});
     $routeProvider.otherwise({redirectTo: '/logging'});
-  }])
+  }]).
+
+  run(['$rootScope',prefab.include]);
 ;

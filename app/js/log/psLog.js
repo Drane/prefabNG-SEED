@@ -5,7 +5,7 @@
  * Time: 18:23
  * To change this template use File | Settings | File Templates.
  */
-angular.module('psLog', []).
+angular.module('psLog', ['psUtil']).
 
 /*  service('psUtil',function ($log) {
 	  $log.info('in psUtil');
@@ -109,22 +109,82 @@ angular.module('psLog', []).
 /**
  * TESTING
  */
-  run(function ($log) {
-	  console.info('testing hier');
+  run(function ($log, prefab) {
+	  console.info('__________________________________________________');
 	  $log.log('log');
-	  $log.info('info');
-	  $log.warn('warn');
-	  $log.error('error');
-	  $log.debug('debug');
+    $log.info('info');
+    $log.warn('warn');
+    $log.error('error');
+    $log.debug('debug');
 
 
+    console.info('__________________________________________________');
 	  $log.log('init', 'level1');
-	  $log.log('init', 'level2');
-
+    $log.log('init', 'level2');
 	  $log.log('log');
-	  $log.info('info');
-	  $log.warn('warn');
-	  $log.error('error');
-	  $log.debug('debug');
 
+    $log.info('info');
+    $log.warn('warn');
+    $log.error('error');
+    $log.debug('debug');
+    console.info('__________________________________________________');
+
+    var testlog = {
+      log: console.log.bind(console),
+      ctxArray:[],
+      in: function(){
+        console.group(prefab.addArg(arguments,'>'));
+        this.ctxArray.push([arguments, this.log]);
+//        console.log('arguments:',);
+        this.log = this.log.bind(this, arguments);
+      },
+      out: function(){
+        var prevCtx = this.ctxArray.pop();
+        console.log('<',prevCtx[0]);
+        console.groupEnd();
+        this.log = prevCtx[1];
+      }
+/*      out: function(){
+        var prevCtx = this.ctxArray.pop();
+        this.log = this.log.bind(prevCtx[1], prevCtx[0]);
+      }*/
+    };
+/*    var testlog = {
+      log: console.log.bind(console,'[testlog]'),
+      ctxArray:[],
+      in: function(ctx){
+        if(ctx===undefined){
+          ctx = this.ctxArray.length+1;
+        }
+        this.ctxArray.push([ctx, this]);
+        this.log = this.log.bind(this, ctx);
+      },
+      out: function(){
+        var prevCtx = this.ctxArray.pop();
+        this.log = prevCtx[1].log.bind(prevCtx[1]);
+      }
+*//*      out: function(){
+        var prevCtx = this.ctxArray.pop();
+        this.log = this.log.bind(prevCtx[1], prevCtx[0]);
+      }*//*
+    };*/
+
+    testlog.log(0);
+    testlog.in('een');
+    testlog.log(1);
+    testlog.in('twee');
+    testlog.log(2);
+    testlog.out();
+    testlog.log(1);
+    testlog.out();
+    testlog.log(0);
+
+
+//    testlog.log2 = testlog.log.bind(testlog,'[log2]');
+
+//  testlog.log('eerste');
+//  testlog.log2('tweede');
+
+//    console.debug(testlog.log);
+//    console.debug(testlog.log2);
   });

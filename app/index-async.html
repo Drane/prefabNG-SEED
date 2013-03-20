@@ -31,15 +31,17 @@
     // load all of the dependencies asynchronously.
     $script('lib/log4javascript/log4javascript_uncompressed.js', function () {
       $script([
-        'js/log/psLog.js',
+              '../components/lodash/lodash.js',
+              'js/util/psUtil.js',
         /*
          'js/_log.js',
          'js/_log.inspect.js',
          'js/initlog.js',
          */
-        '../components/angular/angular.js',
-        'lib/tree/angular.tree.js',
-        'js/psServices.js',
+          '../components/angular/angular.js',
+          'js/log/psLog.js',
+          'lib/tree/angular.tree.js',
+          'js/psServices.js',
         'js/controllers.js',
         /*           'js/filters.js',
          'js/directives.js'*/
