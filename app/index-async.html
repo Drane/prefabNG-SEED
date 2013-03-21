@@ -31,6 +31,7 @@
     // load all of the dependencies asynchronously.
     $script('lib/log4javascript/log4javascript_uncompressed.js', function () {
       $script([
+        'js/util/psUtil.js',
         'js/log/prefabLog.js',
         /*
          'js/_log.js',
@@ -38,6 +39,7 @@
          'js/initlog.js',
          */
         '../components/angular/angular.js',
+        '../components/lodash/lodash.js',
         'lib/tree/angular.tree.js',
         'js/psServices.js',
         'js/controllers.js',
@@ -46,6 +48,10 @@
         'js/log/psApp.js'
 //            'js/app2.js'
       ], function () {
+        var log = log4javascript.getLogger("main");
+        var appender = new log4javascript.InPageAppender();
+        log.addAppender(appender);
+        log.info('log4javascript active');
         // when all is done, execute bootstrap angular application
         angular.bootstrap(document, ['myApp']);
       });

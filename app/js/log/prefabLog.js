@@ -19,44 +19,148 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('prefabLog', []).
+angular.module('prefabLog', ['psUtil']).
 
 	//.value('logFactory_whiteList', /!|.*Ctrl|run/)
-  value('logCfg',{
-//	  log: console,
-	  allowName: /.*/,
-	  allowMethod: {warn: true, error: true}
-  }).
+	value('logCfg', {
+//	  log: null,
+		allowName: /.*/,
+		allowMethod: {warn: true, error: true}
+	}).
 
-  factory('$log', ['logCfg', function (cfg) {
-	  'use strict';
+	factory('$log', ['logCfg', 'ps', function (ctx, ps) {
+		'use strict';
+		ctx = ps.getCtx(arguments, {
+			logFn: ['log', 'info', 'warn', 'error', 'debug'],
+			log: console,
+			out: {}
+		});
 
-	  var log = cfg.log || console;
+		function bindConsoleMethods(logFn, prefix) {
+			_.each(logFn, function (fn) {
+				if(prefix)
+					this[fn] = console[fn].bind(console, prefix);
+				else
+					this[fn] = ps.bindMethod(fn, console);
 
+			}, this);
+		}
 
+//		bindConsoleMethods.call(ctx.out, _.rest(ctx.logFn));
+		bindConsoleMethods.call(ctx.out, ctx.logFn);
 
-	  return newLog;
-  }]).
+		var wrapper = _.wrap(ctx.out.log, function (logFn) {
+			console.log(arguments[1][0]);
+			var prefix = _.first(arguments[1]);
+			if(prefix==='>'){
+				console.log('ahaha');
+				if(ctx.out._ctxArray===undefined)
+					ctx.out._ctxArray = [];
+
+				var ctxName = arguments[1];//.substr(1);
+
+				ctx.out._ctxArray.push([ctxName, ctx.out.log]);
+				return bindConsoleMethods.call(ctx.out, ['log'], ctxName);
+			}else if(prefix==='<'){
+
+			}else{
+				return logFn.apply(ctx.out,arguments);
+			}
+		});
+
+		ctx.out.log = wrapper;
+		return ctx.out;
+	}]).
 
 /**
  * TESTING
  */
-  run(function ($log) {
-	  console.info('testing hier');
-	  $log.log('log');
-	  $log.info('info');
-	  $log.warn('warn');
-	  $log.error('error');
-	  $log.debug('debug');
+	run(function ($log) {
+/*
 
+		function extracted(logFn) {
+			_.each(logFn, function (fn) {
+				this[fn] = _.partial(console[fn].bind(console), 'tester');
+			}, this);
+		}
 
-	  $log.log('init', 'level1');
-	  $log.log('init', 'level2');
+		var Log = function () {
+			"use strict";
+			var logFn = ['log', 'info', 'warn', 'error', 'debug'];
 
-	  $log.log('log');
-	  $log.info('info');
-	  $log.warn('warn');
-	  $log.error('error');
-	  $log.debug('debug');
+			extracted.call(this, logFn);
 
-  });
+//			var tester = _.partial(console.log.bind(console), 'tester');
+			this.warn('yo');
+//			_.bindAll(this, logFn, )
+
+*/
+/*			console.warn(_.at(console, logFn));
+			_.each(_.at(console, logFn), function (consoleMethodFromArray) {
+					consoleMethodFromArray.bind(console);
+			},this);
+
+			var cb = function (method) {
+				console.log(method);
+				if(console[method]){
+					console.log(this);
+					this[method] = console[method].bind(console);
+				}
+			}
+
+			console.log(_.forEach(logFn, cb, this));*//*
+
+//			_.map(logF)
+
+			*/
+/*_.assign(this, _.bindAll(console, logFn), cb, this);*//*
+
+		};
+
+		var log = new Log();
+*/
+
+		/*log.log('log');
+		log.info('info');
+		log.warn('warn');
+		log.error('error');
+		log.debug('debug');*/
+
+/*		var log = {
+
+//			log: _.bindAll(console).,
+
+			_ctxArray: [],
+			in: function (ctx) {
+				"use strict";
+
+			},
+			out: function () {
+				"use strict";
+
+			}
+		};*/
+
+		console.info('testing hier');
+
+		 $log.log('log');
+		 $log.info('info');
+		 $log.warn('warn');
+		 $log.error('error');
+		 $log.debug('debug');
+
+		$log.log('>level1');
+		$log.log('in?');
+		$log.log('>level2');
+		$log.log('in2?');
+		/*
+
+		 $log.log('init', 'level1');
+		 $log.log('init', 'level2');
+
+		 $log.log('log');
+		 $log.info('info');
+		 $log.warn('warn');
+		 $log.error('error');
+		 $log.debug('debug');*/
+	});
