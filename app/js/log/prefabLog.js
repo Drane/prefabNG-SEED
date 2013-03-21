@@ -39,9 +39,9 @@ angular.module('prefabLog', ['psUtil']).
 		function bindConsoleMethods(logFn, prefix) {
 			_.each(logFn, function (fn) {
 				if(prefix)
-					this[fn] = console[fn].bind(console, prefix);
+					return ps.bindMethod(fn, console, prefix);
 				else
-					this[fn] = ps.bindMethod(fn, console);
+					return ps.bindMethod(fn, console);
 
 			}, this);
 		}
@@ -60,11 +60,11 @@ angular.module('prefabLog', ['psUtil']).
 				var ctxName = arguments[1];//.substr(1);
 
 				ctx.out._ctxArray.push([ctxName, ctx.out.log]);
-				return bindConsoleMethods.call(ctx.out, ['log'], ctxName);
+				bindConsoleMethods.call(ctx.out, ['log'], ctxName);
 			}else if(prefix==='<'){
 
 			}else{
-				return logFn.apply(ctx.out,arguments);
+				logFn.apply(ctx.out,arguments);
 			}
 		});
 
@@ -141,7 +141,7 @@ angular.module('prefabLog', ['psUtil']).
 			}
 		};*/
 
-		console.info('testing hier');
+/*		console.info('testing hier');
 
 		 $log.log('log');
 		 $log.info('info');
@@ -152,7 +152,7 @@ angular.module('prefabLog', ['psUtil']).
 		$log.log('>level1');
 		$log.log('in?');
 		$log.log('>level2');
-		$log.log('in2?');
+		$log.log('in2?');*/
 		/*
 
 		 $log.log('init', 'level1');

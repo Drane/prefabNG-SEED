@@ -110,7 +110,7 @@ angular.module('psLog', []).
  * TESTING
  */
   run(function ($log) {
-	  console.info('testing hier');
+/*	  console.info('testing hier');
 	  $log.log('log');
 	  $log.info('info');
 	  $log.warn('warn');
@@ -125,6 +125,6 @@ angular.module('psLog', []).
 	  $log.info('info');
 	  $log.warn('warn');
 	  $log.error('error');
-	  $log.debug('debug');
+	  $log.debug('debug');*/
 
   });
