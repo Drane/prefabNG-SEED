@@ -15,19 +15,23 @@ function HomeCtrl($scope, $log) {
 function LogCtrl($scope, $log) {
     //$log.log("> LogCtrl");
 
+  $scope.info = function(msg){
+      $log.info(msg);
+  }
+
 	$scope.runDev = function () {
 		console.info('testing hier');
 
-		 $log.log('log');
+/*		 $log.log('log');
 		 $log.info('info');
 		 $log.warn('warn');
 		 $log.error('error');
-		 $log.debug('debug');
+		 $log.debug('debug');*/
 
 		 $log.log('>level1');
-		 $log.log('in?');
+		 $log.debug('in?');
 		 $log.log('>level2');
-		 $log.log('in2?');
+		 $log.debug('in2?');
 	}
 
 

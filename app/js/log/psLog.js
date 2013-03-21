@@ -125,6 +125,6 @@ angular.module('psLog', ['psUtil']).
 	  $log.info('info');
 	  $log.warn('warn');
 	  $log.error('error');
-	  $log.debug('debug');
+	  $log.debug('debug');*/
 
   });

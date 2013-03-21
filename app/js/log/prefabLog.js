@@ -36,38 +36,50 @@ angular.module('prefabLog', ['psUtil']).
 			out: {}
 		});
 
-		function bindConsoleMethods(logFn, prefix) {
+		function bindConsoleMethods(that, logFn, prefix) {
+      var that = that||{};
+
 			_.each(logFn, function (fn) {
-				if(prefix)
-					return ps.bindMethod(fn, console, prefix);
-				else
-					return ps.bindMethod(fn, console);
+        if(this[fn]){//method already exists
+          console.log(fn+' method already exists in ',this)
+          this[fn] = ps.bindMethod(fn, this, prefix);
+        }
 
-			}, this);
+				if(prefix){
+          this[fn] = ps.bindMethod(fn, console, prefix);
+        }else{
+          this[fn] = ps.bindMethod(fn, console);
+        }
+			}, that);
+      return that;
 		}
+    ctx.out = bindConsoleMethods(undefined, ctx.logFn);
+//		bindConsoleMethods.call(ctx.out, _.rest(ctx.logFn));    ctx.out = bindConsoleMethods(ctx.logFn);
 
-//		bindConsoleMethods.call(ctx.out, _.rest(ctx.logFn));
-		bindConsoleMethods.call(ctx.out, ctx.logFn);
-
-		var wrapper = _.wrap(ctx.out.log, function (logFn) {
-			console.log(arguments[1][0]);
+		var wrapper = _.wrap(ctx.out.log, function () {
+      console.log('in _wrap with arguments: ',arguments);
 			var prefix = _.first(arguments[1]);
 			if(prefix==='>'){
-				console.log('ahaha');
+				console.log('>prefix:',prefix);
 				if(ctx.out._ctxArray===undefined)
 					ctx.out._ctxArray = [];
 
-				var ctxName = arguments[1];//.substr(1);
+				var ctxName = "["+arguments[1].substr(1)+"]";
 
-				ctx.out._ctxArray.push([ctxName, ctx.out.log]);
-				bindConsoleMethods.call(ctx.out, ['log'], ctxName);
+				ctx.out._ctxArray.push([ctxName, ctx.out]);
+       ctx.out = bindConsoleMethods(ctx.out, _.rest(ctx.logFn), ctxName);
+        ctx.out.log = ps.bindMethod('log', ctx.out, ctxName);
+       ctx.out.log('log hier nu prefix?');
+       ctx.out.info('info hier nu prefix?');
 			}else if(prefix==='<'){
-
+        console.log('<prefix',prefix);
 			}else{
-				logFn.apply(ctx.out,arguments);
+
+        console.log('NO prefix, arguments:',arguments[1]);
+        return ctx.out._log.apply(ctx.out, _.rest(arguments));
 			}
 		});
-
+    ctx.out._log = ctx.out.log;
 		ctx.out.log = wrapper;
 		return ctx.out;
 	}]).
