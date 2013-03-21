@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="Chrome 27.0 (Linux)" package="undefined" timestamp="2013-03-19T01:31:00" id="0" hostname="prefabsoft" tests="1" errors="0" failures="1" time="0.025">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.33 (KHTML, like Gecko) Chrome/27.0.1430.0 Safari/537.33"/>
+    </properties>
+    <testcase name="should hold four li items" time="0.025" classname="Chrome 27.0 (Linux).psTree">
+      <failure type="">Expected 1 to be 4.
+Error: Expected 1 to be 4.
+    at null.&lt;anonymous&gt; (/home/jochen/Documents/code/prefabNG-SEED/test/psTree/psTree.spec.js:47:20)
+    at Object.invoke (/home/jochen/Documents/code/prefabNG-SEED/app/lib/angular/angular.js:2850:28)
+    at workFn (/home/jochen/Documents/code/prefabNG-SEED/test/lib/angular/angular-mocks.js:1754:20)
+</failure>
+    </testcase>
+    <system-out><![CDATA[Chrome 27.0 (Linux) ERROR
+	Uncaught SyntaxError: Unexpected token {
+	at /home/jochen/Documents/code/prefabNG-SEED/app/js/directives.js:14
+
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

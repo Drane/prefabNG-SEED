@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Testacular Server" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="/usr/bin/node" path-to-js-file="/usr/bin/testacular" application-parameters="start testacular.conf.js" working-dir="$PROJECT_DIR$">
+    <RunnerSettings RunnerId="NodeJS.debug" />
+    <RunnerSettings RunnerId="NodeJS.run" />
+    <ConfigurationWrapper RunnerId="NodeJS.debug" />
+    <ConfigurationWrapper RunnerId="NodeJS.run" />
+    <method />
+  </configuration>
+</component>

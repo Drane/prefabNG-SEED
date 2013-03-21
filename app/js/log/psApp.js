@@ -7,6 +7,7 @@
  */
 
 angular.module('myApp', ['psLog', 'psUtil']).//, 'myApp.psServices']).
+angular.module('myApp', ['prefabLog']).//, 'myApp.psServices']).
 
   config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/logging', {templateUrl: 'partials/logging.html', controller: LogCtrl});
