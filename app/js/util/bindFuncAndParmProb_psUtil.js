@@ -81,9 +81,7 @@ function _bind(fn, src) {
 
 		function _bindFuncAndParm(dest, logFn, src) {
 			var args = _.toArray(arguments).slice(3);
-			args = _.flatten(args)
 			_.each(logFn, function (fn) {
-//				dest[fn] = _bind.apply(src[fn],  src,args);
 				dest[fn] = _bind.apply(src[fn],  [src].concat(args));
 			},this);
 		}

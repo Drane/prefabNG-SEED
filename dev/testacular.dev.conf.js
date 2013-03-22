@@ -15,8 +15,8 @@ files = [
   JASMINE_ADAPTER,
 	'app/lib/angular/angular.js',
 	'test/lib/angular/angular-mocks.js',
-	'app/js/directives.js',
-  'test/psTree/*.spec.js'
+	//'app/js/directives.js',
+    'dev/test/*.spec.js'
 ];
 
 // list of files to exclude
